@@ -34,20 +34,20 @@ class Network:
         self.plugin = IECore()
 
         # Add a CPU extension, if applicable
-        if cpu_extension and "CPU" in device:
-            self.plugin.add_extension(cpu_extension, device)
+        #if cpu_extension and "CPU" in device:
+        #    self.plugin.add_extension(cpu_extension, device)
 
         # Read the IR as a IENetwork
-        network = IENetwork(model=model_xml, weights=model_bin)
+        self.network = IENetwork(model=model_xml, weights=model_bin)
 
         # Load the IENetwork into the plugin
-        self.exec_network = self.plugin.load_network(network, device)
+        self.exec_network = self.plugin.load_network(self.network, device)
 
         # Get the input layer
-        self.input_blob = next(iter(network.inputs))
+        self.input_blob = next(iter(self.network.inputs))
 
         # Return the input shape (to determine preprocessing)
-        return network.inputs[self.input_blob].shape
+        return self.network.inputs[self.input_blob].shape
 
 
     def sync_inference(self, image):

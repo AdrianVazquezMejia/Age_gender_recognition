@@ -29,7 +29,6 @@ def get_args():
     # -- Create the arguments
     required.add_argument("-i", help=i_desc, required=True)
     required.add_argument("-m", help=m_desc, required=True)
-    optional.add_argument("-c", help=c_desc, default=None)
     optional.add_argument("-d", help=d_desc, default="CPU")
     args = parser.parse_args()
 
@@ -59,10 +58,15 @@ def perform_inference(args):
     # Create a Network for using the Inference Engine
     inference_network = Network()  
     # Load the model in the network, and obtain its input shape    
-    n, c, h, w = inference_network.load_model(args.m, args.d, args.c)
+    n, c, h, w = inference_network.load_model(args.m, args.d)
     ### TODO: Get and open video capture
-    cap = cv2.VideoCapture(args.i)
-    cap.open(args.i)
+        #Check for CAM, image or video
+    if args.i == 'CAM':
+        input_stream = 0
+    cap = cv2.VideoCapture(input_stream)
+    if input_stream :
+        cap.open(args.input)
+    #cap.open(args.i)
     width = int(cap.get(3))
     height = int(cap.get(4))
     # The second argument should be `cv2.VideoWriter_fourcc('M','J','P','G')`
@@ -88,7 +92,8 @@ def perform_inference(args):
             # Create an output image based on network
             output_image = create_output_image(frame, processed_output,width,height)
             # Save down the resulting image
-            out.write(output_image)        
+            out.write(output_image)
+            cv2.imshow("fram",output_image)      
         if key_pressed == 27:
             break
     # Release the capture and destroy any OpenCV windows

@@ -13,7 +13,7 @@ def handle_hc(output, input_shape):
     age= output['age_conv3'].flatten()
     genre = output['prob'].flatten()
     # TODO 2: Resize this output 
-    age_pred = int(age*100);
+    age_pred = int(age*100)
     genre_pred = np.argmax(genre)
 
     return age_pred, genre_pred
