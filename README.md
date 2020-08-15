@@ -11,7 +11,7 @@ The arguments are
     
     if argument "i" is  "CAM" then the input is the webcam.
     
-    ESC to break the processing
+    ESC to stop the processing
 
 example of command 
 
